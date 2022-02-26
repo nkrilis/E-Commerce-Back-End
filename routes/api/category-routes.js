@@ -72,6 +72,7 @@ router.put('/:id', async (req, res) => {
       {
         id: req.params.id,
       },
+      
     });
 
     if (!categoryData) 
