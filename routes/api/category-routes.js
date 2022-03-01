@@ -101,7 +101,12 @@ router.delete('/:id', async (req, res) => {
         },
       });
 
-      res.status(200).json({message: `The Category with id: ${req.params.id} has been deleted!`});
+      if (!deletedTag)
+      {
+        res.status(500).json({message: `id: ${req.params.id} DOES NOT EXIST!`});
+        return;
+      }
+      res.status(200).json({message: `The Tag with id: ${req.params.id} has been deleted!`});
   }
   catch(err)
   {

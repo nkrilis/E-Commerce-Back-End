@@ -51,32 +51,56 @@ router.get('/:id', async (req, res) => {
 
 // create new product
 router.post('/', async (req, res) => {
-  try 
-  {
-    const productData = await Product.create(
-      {
-        product_name: req.body.product_name,
-        price: req.body.price,
-        stock: req.body.stock,
-        tagIds: req.body.tagIds
-      });
 
+  Product.create(req.body)
+    .then((product) => {
+      // if there's product tags, we need to create pairings to bulk create in the ProductTag model
       if (req.body.tagIds.length) {
         const productTagIdArr = req.body.tagIds.map((tag_id) => {
-          {
-            id: req.body.id,
-            tag_id
-          }
+          return {
+            product_id: product.id,
+            tag_id,
+          };
         });
-        const createdTags = await ProductTag.bulkCreate(productTagIdArr);
+        return ProductTag.bulkCreate(productTagIdArr);
       }
+      // if no product tags, just respond
+      res.status(200).json(product);
+    })
+    .then((productTagIds) => res.status(200).json(productTagIds))
+    .catch((err) => {
+      console.log(err);
+      res.status(400).json(err);
+    });
 
-    res.status(200).json(productData);
-  } 
-  catch (err) 
-  {
-    res.status(400).json(err);
-  }
+
+
+  // try 
+  // {
+  //   const productData = await Product.create(
+  //     {
+  //       product_name: req.body.product_name,
+  //       price: req.body.price,
+  //       stock: req.body.stock,
+  //       tagIds: req.body.tagIds
+  //     });
+
+  //     if (req.body.tagIds.length) {
+  //       const productTagIdArr = req.body.tagIds.map((tag_id) => {
+  //         {
+  //           product_id: req.body.product_id,
+  //           tag_id
+  //         }
+  //       });
+  //       const createdTags = await ProductTag.bulkCreate(productTagIdArr);
+  //     }
+
+  //   res.status(200).json(productData);
+  // } 
+  // catch (err) 
+  // {
+  //   res.status(400).json(err);
+  // }
 
   /* req.body should look like this...
     {
@@ -127,6 +151,11 @@ router.delete('/:id', async (req, res) => {
         },
       });
 
+      if (!deletedProduct)
+      {
+        res.status(500).json({message: `id: ${req.params.id} DOES NOT EXIST!`});
+        return;
+      }
       res.status(200).json({message: `The Product with id: ${req.params.id} has been deleted!`});
   }
   catch(err)
