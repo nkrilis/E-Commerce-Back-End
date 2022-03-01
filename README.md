@@ -1,248 +1,122 @@
-# 13 Object-Relational Mapping (ORM): E-Commerce Back End
 
-## Your Task
+  # E-Commerce-Back-End
 
-Internet retail, also known as **e-commerce**, is the largest sector of the electronics industry, generating an estimated $29 trillion in 2019. E-commerce platforms like Shopify and WooCommerce provide a suite of services to businesses of all sizes. Due to their prevalence, understanding the fundamental architecture of these platforms will benefit you as a full-stack web developer.
+  [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-Your task is to build the back end for an e-commerce site by modifying starter code. You’ll configure a working Express.js API to use Sequelize to interact with a MySQL database.
-
-Because this application won’t be deployed, you’ll also need to provide a link to a walkthrough video that demonstrates its functionality and all of the acceptance criteria being met. You’ll need to submit a link to the video and add it to the readme of your project.
-
-## User Story
-
-```md
-AS A manager at an internet retail company
-I WANT a back end for my e-commerce website that uses the latest technologies
-SO THAT my company can compete with other e-commerce companies
-```
-
-## Acceptance Criteria
-
-```md
-GIVEN a functional Express.js API
-WHEN I add my database name, MySQL username, and MySQL password to an environment variable file
-THEN I am able to connect to a database using Sequelize
-WHEN I enter schema and seed commands
-THEN a development database is created and is seeded with test data
-WHEN I enter the command to invoke the application
-THEN my server is started and the Sequelize models are synced to the MySQL database
-WHEN I open API GET routes in Insomnia for categories, products, or tags
-THEN the data for each of these routes is displayed in a formatted JSON
-WHEN I test API POST, PUT, and DELETE routes in Insomnia
-THEN I am able to successfully create, update, and delete data in my database
-```
-
-## Mock-Up
-
-The following animation shows the application's GET routes to return all categories, all products, and all tags being tested in Insomnia:
-
-![In Insomnia, the user tests “GET tags,” “GET Categories,” and “GET All Products.”.](./Assets/13-orm-homework-demo-01.gif)
-
-The following animation shows the application's GET routes to return a single category, a single product, and a single tag being tested in Insomnia:
-
-![In Insomnia, the user tests “GET tag by id,” “GET Category by ID,” and “GET One Product.”](./Assets/13-orm-homework-demo-02.gif)
-
-The following animation shows the application's POST, PUT, and DELETE routes for categories being tested in Insomnia:
-
-![In Insomnia, the user tests “DELETE Category by ID,” “CREATE Category,” and “UPDATE Category.”](./Assets/13-orm-homework-demo-03.gif)
-
-Your walkthrough video should also show the POST, PUT, and DELETE routes for products and tags being tested in Insomnia.
-
-## Getting Started
-
-You’ll need to use the [MySQL2](https://www.npmjs.com/package/mysql2) and [Sequelize](https://www.npmjs.com/package/sequelize) packages to connect your Express.js API to a MySQL database and the [dotenv](https://www.npmjs.com/package/dotenv) package to use environment variables to store sensitive data.
-
-Use the `schema.sql` file in the `db` folder to create your database with MySQL shell commands. Use environment variables to store sensitive data like your MySQL username, password, and database name.
-
-### Database Models
-
-Your database should contain the following four models, including the requirements listed for each model:
-
-* `Category`
-
-  * `id`
-
-    * Integer.
+  ## Description
   
-    * Doesn't allow null values.
+  This is an application that uses `sequilize`, `express`, and `mysql` in order to create and manage products for an E-Commerce web application. Through the use of these dependencies I have created four tables to organize the data (Category, Product, ProductTag, and Tag). I then seeded the tables with some data to show the functionallity of the application. This application does not generate a website to view the products, it is solely the back end for data management. The user has the ability to add new rows, update an existing row, and delete an exiting row from each table independtly. The realtionships between each table have been defined so that when a user creates a new row it will link correctly through `foreign key` properties. Below you can find a video walk through of the application.
   
-    * Set as primary key.
+  ## Table of Contents
   
-    * Uses auto increment.
-
-  * `category_name`
+  - [Installation](#installation)
+  - [Usage](#usage)
+  - [Contributing](#how-to-contribute)
+  - [Tests](#tests)
+  - [Qyestions](#questions)
+  - [License](#license)
   
-    * String.
+  ## Installation
+  In order to install the project you must first clone this repo to your local machine. Once cloned you can run `npm install` to install all the necessary dependencies to run the application. You must also initialize the database through the database `schema.sql` file. To do this run `mysql -u root -p` and enter your password when prompted. From the main directory of the application, in the `mysql` enviornment run `source ./db/schema.sql` this will create the database for the application. 
+  ## Usage
+  Once the installation process is complete you should now create a `.env` file in the main directory of the application and include three variables: `DB_USER= your mysql user name`, `DB_PW= your mysql password`, and `DB_NAME=ecommerce_db` these are the rquired variables that allows the application to connect to the `mysql` database. After this is completed you can run `npm start` to initialize the database with the tables defined by the `sequilize` model classes. Quit the instance of the application run and run `node ./seeds/index.js` from the main directory in order to seed the database with sample data. You can now run the application again through `npm start` and test the get, post, put, and delete routes through insomnia or any other route testing application. You can view the available urls below.
+
+1. Tag Routes
+    - `GET: http://localhost:3001/api/tags`
+        - Returns json objects of all tags
+    - `GET: http://localhost:3001/api/tags/9`
+        - Returns a specific tag by its id
+    - `POST: http://localhost:3001/api/tags`
+        - Creates a new tag. Expects a json object like...
+        ```json
+        {
+	        "tag_name": "anything"
+        }
+        ```
+    - `PUT: http://localhost:3001/api/tags/21`
+        - Updates an existing tag by id. Expects a json object like...
+        ```json
+        {
+	        "tag_name": "anything"
+        }
+        ```
+    - `DELETE: http://localhost:3001/api/tags/21`
+        - Deletes a specific tag by id
+
+2. Product Routes
+    - `GET: http://localhost:3001/api/products`
+        - Returns json objects of all products
+    - `GET: http://localhost:3001/api/products/9`
+        - Returns a specific product by its id
+    - `POST: http://localhost:3001/api/products`
+        - Creates a new product. Expects a json object like...
+        ```json
+        {
+	        "tag_name": "anything"
+        }
+        ```
+    - `PUT: http://localhost:3001/api/products/21`
+        - Updates an existing product by id. Expects a json object like...
+        ```json
+        {
+	        "product_name": "anything",
+            "price": 200.00,
+            "stock": 3,
+            "tagIds": [1, 2, 3, 9]
+        }
+        ```
+    - `DELETE: http://localhost:3001/api/products/21`
+        - Deletes a specific product by id
+
+3. Category Routes
+    - `GET: http://localhost:3001/api/categories`
+        - Returns json objects of all categories
+    - `GET: http://localhost:3001/api/categories/9`
+        - Returns a specific category by its id
+    - `POST: http://localhost:3001/api/categories`
+        - Creates a new category. Expects a json object like...
+        ```json
+        {
+	        "tag_name": "anything"
+        }
+        ```
+    - `PUT: http://localhost:3001/api/categories/21`
+        - Updates an existing category by id. Expects a json object like...
+        ```json
+        {
+	        "category_name": "anything"
+        }
+        ```
+    - `DELETE: http://localhost:3001/api/categories/21`
+        - Deletes a specific category by id
+
+  ## How to Contribute
+  This application is solely created by Nicholas Krilis. If you would like to make changes to this project please fork the repo and submit your changes via a pull request. I will take a look and if all looks good I will merge, Thank you!
+  ## Tests
+  There are no testing suites associated with this project.
+  ## Questions
+  [Here you can view my Github Account](https://github.com/nkrilis)
+
+  If you have any questions or would like to reach me you can contact me at [n.krilis@gmail.com](mailto:n.krilis@gmail.com?subject=[GitHub]%20Source%20Han%20Sans)
+
+  ## License
+
+    Copyright 2022 Nicholas Krilis
+
+    Permission is hereby granted, free of charge, to any person obtaining a copy of 
+    this software and associated documentation files (the "Software"), to deal in the 
+    Software without restriction, including without limitation the rights to use, 
+    copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, 
+    and to permit persons to whom the Software is furnished to do so, subject 
+    to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in all copies 
+    or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, 
+    INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR 
+    PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE 
+    FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, 
+    ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+    
   
-    * Doesn't allow null values.
-
-* `Product`
-
-  * `id`
-  
-    * Integer.
-  
-    * Doesn't allow null values.
-  
-    * Set as primary key.
-  
-    * Uses auto increment.
-
-  * `product_name`
-  
-    * String.
-  
-    * Doesn't allow null values.
-
-  * `price`
-  
-    * Decimal.
-  
-    * Doesn't allow null values.
-  
-    * Validates that the value is a decimal.
-
-  * `stock`
-  
-    * Integer.
-  
-    * Doesn't allow null values.
-  
-    * Set a default value of `10`.
-  
-    * Validates that the value is numeric.
-
-  * `category_id`
-  
-    * Integer.
-  
-    * References the `Category` model's `id`.
-
-* `Tag`
-
-  * `id`
-  
-    * Integer.
-  
-    * Doesn't allow null values.
-  
-    * Set as primary key.
-  
-    * Uses auto increment.
-
-  * `tag_name`
-  
-    * String.
-
-* `ProductTag`
-
-  * `id`
-
-    * Integer.
-
-    * Doesn't allow null values.
-
-    * Set as primary key.
-
-    * Uses auto increment.
-
-  * `product_id`
-
-    * Integer.
-
-    * References the `Product` model's `id`.
-
-  * `tag_id`
-
-    * Integer.
-
-    * References the `Tag` model's `id`.
-
-### Associations
-
-You'll need to execute association methods on your Sequelize models to create the following relationships between them:
-
-* `Product` belongs to `Category`, and `Category` has many `Product` models, as a category can have multiple products but a product can only belong to one category.
-
-* `Product` belongs to many `Tag` models, and `Tag` belongs to many `Product` models. Allow products to have multiple tags and tags to have many products by using the `ProductTag` through model.
-
-> **Hint:** Make sure you set up foreign key relationships that match the column we created in the respective models.
-
-### Fill Out the API Routes to Perform RESTful CRUD Operations
-
-Fill out the unfinished routes in `product-routes.js`, `tag-routes.js`, and `category-routes.js` to perform create, read, update, and delete operations using your Sequelize models.
-
-Note that the functionality for creating the many-to-many relationship for products has already been completed for you.
-
-> **Hint**: Be sure to look at the mini-project code for syntax help and use your model's column definitions to figure out what `req.body` will be for POST and PUT routes!
-
-### Seed the Database
-
-After creating the models and routes, run `npm run seed` to seed data to your database so that you can test your routes.
-
-### Sync Sequelize to the Database on Server Start
-
-Create the code needed in `server.js` to sync the Sequelize models to the MySQL database on server start.
-
-## Grading Requirements
-
-This homework is graded based on the following criteria: 
-
-### Deliverables: 10%
-
-* The GitHub repository containing your application code.
-
-### Walkthrough Video: 37%
-
-* A walkthrough video that demonstrates the functionality of the e-commerce back end must be submitted, and a link to the video should be included in your readme file.
-
-* The walkthrough video must show all of the technical acceptance criteria being met.
-
-* The walkthrough video must demonstrate how to create the schema from the MySQL shell.
-
-* The walkthrough video must demonstrate how to seed the database from the command line.
-
-* The walkthrough video must demonstrate how to start the application’s server.
-
-* The walkthrough video must demonstrate GET routes for all categories, all products, and all tags being tested in Insomnia.
-
-* The walkthrough video must demonstrate GET routes for a single category, a single product, and a single tag being tested in Insomnia.
-
-* The walkthrough video must demonstrate POST, PUT, and DELETE routes for categories, products, and tags being tested in Insomnia.
-
-### Technical Acceptance Criteria: 40%
-
-* Satisfies all of the preceding acceptance criteria plus the following:
-
-  * Connects to a MySQL database using the [MySQL2](https://www.npmjs.com/package/mysql) and [Sequelize](https://www.npmjs.com/package/sequelize) packages.
-
-  * Stores sensitive data, like a user’s MySQL username, password, and database name, using environment variables through the [dotenv](https://www.npmjs.com/package/dotenv) package.
-
-  * Syncs Sequelize models to a MySQL database on the server start.
-
-  * Includes column definitions for all four models outlined in the homework instructions.
-
-  * Includes model associations outlined in the homework instructions.
-
-### Repository Quality: 13%
-
-* Repository has a unique name.
-
-* Repository follows best practices for file structure and naming conventions.
-
-* Repository follows best practices for class/id naming conventions, indentation, quality comments, etc.
-
-* Repository contains multiple descriptive commit messages.
-
-* Repository contains quality readme with description and a link to a walkthrough video.
-
-## Review
-
-You are required to submit BOTH of the following for review:
-
-* A walkthrough video demonstrating the functionality of the application and all of the acceptance criteria being met.
-
-* The URL of the GitHub repository. Give the repository a unique name and include a readme describing the project.
-
----
-© 2022 Trilogy Education Services, LLC, a 2U, Inc. brand. Confidential and Proprietary. All Rights Reserved.
