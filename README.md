@@ -7,6 +7,10 @@
   
   This is an application that uses `sequilize`, `express`, and `mysql` in order to create and manage products for an E-Commerce web application. Through the use of these dependencies I have created four tables to organize the data (Category, Product, ProductTag, and Tag). I then seeded the tables with some data to show the functionallity of the application. This application does not generate a website to view the products, it is solely the back end for data management. The user has the ability to add new rows, update an existing row, and delete an exiting row from each table independtly. The realtionships between each table have been defined so that when a user creates a new row it will link correctly through `foreign key` properties. Below you can find a video walk through of the application.
   
+   ## Click for video tutorial
+  [![E-COMMERCE](https://user-images.githubusercontent.com/22037181/156100030-f4c794c7-dc94-427e-86d9-bacc9c9d963e.png)](https://drive.google.com/file/d/1ZlZd5Gl6y1PDWceoGE3vmWDI1XW1TKB_/view?usp=sharing)
+  
+
   ## Table of Contents
   
   - [Installation](#installation)
